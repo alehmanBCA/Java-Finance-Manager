@@ -110,6 +110,23 @@ public class UserDao {
         }
     }
 
+    public boolean updatePassword(int id, String newPassword) {
+        String sql = "UPDATE users SET password = ? WHERE id = ?";
+
+        try (Connection conn = Db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, newPassword);
+            ps.setInt(2, id);
+
+            int rows = ps.executeUpdate();
+            return rows == 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating user password", e);
+        }
+    }
+
     // Delete
     public boolean deleteById(int id) {
         String sql = "DELETE FROM users WHERE id = ?";
